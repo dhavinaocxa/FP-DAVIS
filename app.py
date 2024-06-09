@@ -5,10 +5,10 @@ import mysql.connector
 
 def get_data_from_db():
     mydb = mysql.connector.connect(
-        host=st.secrets["mysql"]["host"],
-        user=st.secrets["mysql"]["user"],
-        password=st.secrets["mysql"]["password"],
-        database=st.secrets["mysql"]["database"]
+        host="localhost",  # ganti dengan host database Anda
+        user="root",       # ganti dengan user database Anda
+        password="",       # ganti dengan password database Anda
+        database="aw"      # ganti dengan nama database Anda
     )
 
     query = """
