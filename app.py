@@ -9,6 +9,7 @@ def get_data_from_db():
         user="root",       # ganti dengan user database Anda
         password="",       # ganti dengan password database Anda
         database="aw"      # ganti dengan nama database Anda
+        port=3306
     )
 
     query = """
