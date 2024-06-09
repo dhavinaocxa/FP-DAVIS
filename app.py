@@ -8,7 +8,7 @@ def get_data_from_db():
         host="localhost",  # ganti dengan host database Anda
         user="root",       # ganti dengan user database Anda
         password="",       # ganti dengan password database Anda
-        database="aw"      # ganti dengan nama database Anda
+        database="aw",     # ganti dengan nama database Anda
         port=3306
     )
 
