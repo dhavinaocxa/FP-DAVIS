@@ -4,16 +4,18 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 
+# Fungsi untuk membuat koneksi ke database
+def get_db_connection():
+    return mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="",
+        database="aw"
+    )
+
 # Fungsi untuk mengambil data untuk line chart
-def get_line_data():
+def get_line_data(mydb):
     try:
-        mydb = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="", 
-            database="aw"
-        )
-        
         query = """
         SELECT
           DATE_FORMAT(OrderDateKey, '%Y-%m') AS Month,
@@ -26,25 +28,15 @@ def get_line_data():
         ORDER BY
           Year, Month;
         """
-        
         df = pd.read_sql(query, mydb)
-        mydb.close()
         return df
-    
     except mysql.connector.Error as err:
         st.error(f"Error: {err}")
         return None
 
 # Fungsi untuk mengambil data untuk scatter plot
-def get_scatter_data():
+def get_scatter_data(mydb):
     try:
-        mydb = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="", 
-            database="aw"
-        )
-        
         query = """
         SELECT
           OrderDateKey,
@@ -54,25 +46,15 @@ def get_scatter_data():
         GROUP BY
           OrderDateKey;
         """
-        
         df = pd.read_sql(query, mydb)
-        mydb.close()
         return df
-    
     except mysql.connector.Error as err:
         st.error(f"Error: {err}")
         return None
 
 # Fungsi untuk mengambil data untuk donut chart
-def get_donut_data():
+def get_donut_data(mydb):
     try:
-        mydb = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="", 
-            database="aw"
-        )
-        
         query = """
         SELECT
           st.SalesTerritoryRegion,
@@ -84,25 +66,15 @@ def get_donut_data():
         GROUP BY
           st.SalesTerritoryRegion;
         """
-        
         df = pd.read_sql(query, mydb)
-        mydb.close()
         return df
-    
     except mysql.connector.Error as err:
         st.error(f"Error: {err}")
         return None
 
 # Fungsi untuk mengambil data untuk scatter plot baru
-def get_scatter2_data():
+def get_scatter2_data(mydb):
     try:
-        mydb = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="", 
-            database="aw"
-        )
-        
         query = """
         SELECT
           dc.YearlyIncome,
@@ -114,11 +86,8 @@ def get_scatter2_data():
         GROUP BY
           dc.YearlyIncome;
         """
-        
         df = pd.read_sql(query, mydb)
-        mydb.close()
         return df
-    
     except mysql.connector.Error as err:
         st.error(f"Error: {err}")
         return None
@@ -126,10 +95,13 @@ def get_scatter2_data():
 # Main Streamlit App
 def main():
     st.title("Visualisasi Penjualan Adventure Work")
+    
+    # Buat koneksi ke database
+    mydb = get_db_connection()
 
     # 1. COMPARISON - Line Chart
     st.header("Line Chart - Perbandingan Penjualan Bulanan")
-    df_line = get_line_data()
+    df_line = get_line_data(mydb)
     if df_line is not None:
         # Konversi kolom 'Month' ke datetime
         df_line['Month'] = pd.to_datetime(df_line['Month'])
@@ -154,7 +126,7 @@ def main():
 
     # 2. DISTRIBUTION - Scatter Plot
     st.header("Scatter Plot - Distribusi Total Sales Berdasarkan OrderDateKey")
-    df_scatter = get_scatter_data()
+    df_scatter = get_scatter_data(mydb)
     if df_scatter is not None:
         fig_scatter = px.scatter(
             df_scatter,
@@ -166,7 +138,7 @@ def main():
         
     # 3. COMPOSITION - Donut Chart
     st.header("Donut Chart - Komposisi Total Sales Berdasarkan Wilayah")
-    df_donut = get_donut_data()
+    df_donut = get_donut_data(mydb)
     if df_donut is not None:
         fig_donut = go.Figure(data=[go.Pie(
             labels=df_donut['SalesTerritoryRegion'],
@@ -178,7 +150,7 @@ def main():
 
     # 4. RELATIONSHIP - Scatter Plot
     st.header("Scatter Plot - Hubungan antara Pendapatan Tahunan dan Jumlah Penjualan")
-    df_scatter2 = get_scatter2_data()
+    df_scatter2 = get_scatter2_data(mydb)
     if df_scatter2 is not None:
         fig_scatter2 = px.scatter(
             df_scatter2,
@@ -187,6 +159,9 @@ def main():
             labels={'YearlyIncome':'Pendapatan Tahunan (YearlyIncome)', 'TotalSalesAmount':'Jumlah Penjualan (TotalSalesAmount)'}
         )
         st.plotly_chart(fig_scatter2)
+
+    # Tutup koneksi ke database
+    mydb.close()
 
 if __name__ == "__main__":
     main()
