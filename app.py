@@ -119,7 +119,7 @@ def main():
         ["Comparison", "Distribution", "Composition", "Relationship"]
     )
 
-    if visualisasi_type == "Adventure Work"
+    if visualisasi_type == "Adventure Work":
     st.title("Visualisasi Penjualan Adventure Work")
 
         # Buat koneksi ke database
@@ -192,7 +192,7 @@ def main():
         else:
             st.error("Could not connect to the database. Please check your database connection settings.")
    
-    elif visualisasi_type == "Scrapping IMDB"
+    elif visualisasi_type == "Scrapping IMDB":
         st.title("Visualisasi Film Produksi Walt Disney Tahun 2023") 
         
 
