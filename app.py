@@ -107,84 +107,94 @@ def get_scatter2_data(mydb):
 
 # Main Streamlit App
 def main():
-    st.title("Visualisasi Penjualan Adventure Work")
-    
+
     # Sidebar untuk memilih tipe chart
     st.sidebar.title("Kontrol Visualisasi")
+    visualisasi_type = st.sidebar.selectbox(
+        "Pilih dataset",
+        ["Adventure Work", "Scrapping IMDB"]
+    )
     chart_type = st.sidebar.selectbox(
         "Pilih tipe chart",
-        ["Line Chart", "Scatter Plot", "Donut Chart", "Scatter Plot (Income vs Sales)"]
+        ["Comparison", "Distribution", "Composition", "Relationship"]
     )
+
+    if visualisasi_type == "Adventure Work"
+    st.title("Visualisasi Penjualan Adventure Work")
+
+        # Buat koneksi ke database
+        mydb = get_db_connection()
+        
+        if mydb is not None:
+            if chart_type == "Comparison":
+                st.header("Line Chart - Perbandingan Penjualan Bulanan")
+                df_line = get_line_data(mydb)
+                if df_line is not None:
+                    # Konversi kolom 'Month' ke datetime
+                    df_line['Month'] = pd.to_datetime(df_line['Month'])
+                    
+                    # Plot menggunakan plotly untuk visualisasi interaktif
+                    fig_line = px.line(
+                        df_line,
+                        x='Month',
+                        y='TotalSales',
+                        color='Year',
+                        labels={'TotalSales':'Total Sales', 'Month':'Bulan'},
+                    )
+                    
+                    # Update layout for smaller scale
+                    fig_line.update_layout(
+                        autosize=False,
+                        width=800,  # Set width here
+                        height=400  # Set height here
+                    )
+                    
+                    st.plotly_chart(fig_line)
     
-    # Buat koneksi ke database
-    mydb = get_db_connection()
+            elif chart_type == "Distribution":
+                st.header("Scatter Plot - Distribusi Total Sales Berdasarkan OrderDateKey")
+                df_scatter = get_scatter_data(mydb)
+                if df_scatter is not None:
+                    fig_scatter = px.scatter(
+                        df_scatter,
+                        x='OrderDateKey',
+                        y='TotalSalesAmount',
+                        labels={'OrderDateKey':'Order Date Key', 'TotalSalesAmount':'Total Sales Amount'}
+                    )
+                    st.plotly_chart(fig_scatter)
+                    
+            elif chart_type == "Composition":
+                st.header("Donut Chart - Komposisi Total Sales Berdasarkan Wilayah")
+                df_donut = get_donut_data(mydb)
+                if df_donut is not None:
+                    fig_donut = go.Figure(data=[go.Pie(
+                        labels=df_donut['SalesTerritoryRegion'],
+                        values=df_donut['TotalSalesAmount'],
+                        hole=0.3,
+                        textinfo='label+percent'
+                    )])
+                    st.plotly_chart(fig_donut)
     
-    if mydb is not None:
-        if chart_type == "Line Chart":
-            st.header("Line Chart - Perbandingan Penjualan Bulanan")
-            df_line = get_line_data(mydb)
-            if df_line is not None:
-                # Konversi kolom 'Month' ke datetime
-                df_line['Month'] = pd.to_datetime(df_line['Month'])
-                
-                # Plot menggunakan plotly untuk visualisasi interaktif
-                fig_line = px.line(
-                    df_line,
-                    x='Month',
-                    y='TotalSales',
-                    color='Year',
-                    labels={'TotalSales':'Total Sales', 'Month':'Bulan'},
-                )
-                
-                # Update layout for smaller scale
-                fig_line.update_layout(
-                    autosize=False,
-                    width=800,  # Set width here
-                    height=400  # Set height here
-                )
-                
-                st.plotly_chart(fig_line)
-
-        elif chart_type == "Scatter Plot":
-            st.header("Scatter Plot - Distribusi Total Sales Berdasarkan OrderDateKey")
-            df_scatter = get_scatter_data(mydb)
-            if df_scatter is not None:
-                fig_scatter = px.scatter(
-                    df_scatter,
-                    x='OrderDateKey',
-                    y='TotalSalesAmount',
-                    labels={'OrderDateKey':'Order Date Key', 'TotalSalesAmount':'Total Sales Amount'}
-                )
-                st.plotly_chart(fig_scatter)
-                
-        elif chart_type == "Donut Chart":
-            st.header("Donut Chart - Komposisi Total Sales Berdasarkan Wilayah")
-            df_donut = get_donut_data(mydb)
-            if df_donut is not None:
-                fig_donut = go.Figure(data=[go.Pie(
-                    labels=df_donut['SalesTerritoryRegion'],
-                    values=df_donut['TotalSalesAmount'],
-                    hole=0.3,
-                    textinfo='label+percent'
-                )])
-                st.plotly_chart(fig_donut)
-
-        elif chart_type == "Scatter Plot (Income vs Sales)":
-            st.header("Scatter Plot - Hubungan antara Pendapatan Tahunan dan Jumlah Penjualan")
-            df_scatter2 = get_scatter2_data(mydb)
-            if df_scatter2 is not None:
-                fig_scatter2 = px.scatter(
-                    df_scatter2,
-                    x='YearlyIncome',
-                    y='TotalSalesAmount',
-                    labels={'YearlyIncome':'Pendapatan Tahunan (YearlyIncome)', 'TotalSalesAmount':'Jumlah Penjualan (TotalSalesAmount)'}
-                )
-                st.plotly_chart(fig_scatter2)
-
-        # Tutup koneksi ke database
-        mydb.close()
-    else:
-        st.error("Could not connect to the database. Please check your database connection settings.")
+            elif chart_type == "Relationship":
+                st.header("Scatter Plot - Hubungan antara Pendapatan Tahunan dan Jumlah Penjualan")
+                df_scatter2 = get_scatter2_data(mydb)
+                if df_scatter2 is not None:
+                    fig_scatter2 = px.scatter(
+                        df_scatter2,
+                        x='YearlyIncome',
+                        y='TotalSalesAmount',
+                        labels={'YearlyIncome':'Pendapatan Tahunan (YearlyIncome)', 'TotalSalesAmount':'Jumlah Penjualan (TotalSalesAmount)'}
+                    )
+                    st.plotly_chart(fig_scatter2)
+    
+            # Tutup koneksi ke database
+            mydb.close()
+        else:
+            st.error("Could not connect to the database. Please check your database connection settings.")
+   
+    elif visualisasi_type == "Scrapping IMDB"
+        st.title("Visualisasi Film Produksi Walt Disney Tahun 2023") 
+        
 
 if __name__ == "__main__":
     main()
