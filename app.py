@@ -120,7 +120,7 @@ def main():
     )
 
     if visualisasi_type == "Adventure Work":
-    st.title("Visualisasi Penjualan Adventure Work")
+        st.title("Visualisasi Penjualan Adventure Work")
 
         # Buat koneksi ke database
         mydb = get_db_connection()
