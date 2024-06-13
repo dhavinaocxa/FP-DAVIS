@@ -8,9 +8,9 @@ import plotly.graph_objects as go
 def get_db_connection():
     try:
         connection = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="",
+            host="kubela.id",
+            user="davis2024irwan",
+            password="wh451n9m@ch1n3",
             database="aw"
         )
         return connection
