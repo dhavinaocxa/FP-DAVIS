@@ -4,6 +4,13 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 
+# Page configuration
+st.set_page_config(
+    page_title="Data Visualisasi Dashboard",
+    page_icon="📊",
+    layout="wide",
+    initial_sidebar_state="expanded")
+
 # Fungsi untuk membuat koneksi ke database
 def get_db_connection():
     try:
@@ -109,7 +116,7 @@ def get_scatter2_data(mydb):
 def main():
 
     # Sidebar untuk memilih tipe chart
-    st.sidebar.title("Kontrol Visualisasi")
+    st.sidebar.title("📊 Dashboard")
     visualisasi_type = st.sidebar.selectbox(
         "Pilih dataset",
         ["Adventure Work", "Scrapping IMDB"]
