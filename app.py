@@ -118,11 +118,11 @@ def main():
     # Sidebar untuk memilih tipe chart
     st.sidebar.title("📊 Dashboard")
     visualisasi_type = st.sidebar.selectbox(
-        "Pilih dataset",
+        "Select dataset",
         ["Adventure Work", "Scrapping IMDB"]
     )
     chart_type = st.sidebar.selectbox(
-        "Pilih tipe chart",
+        "Select chart type",
         ["Comparison", "Distribution", "Composition", "Relationship"]
     )
 
@@ -160,7 +160,7 @@ def main():
                     st.plotly_chart(fig_line)
 
                 # Penjelasan chart
-                with st.expander('About', expanded=True):
+                with st.expander('About Chart', expanded=True):
                     st.write('''
                          - Data: Database Adventure Work
                          - Visualisasi ini menggambarkan perbandingan jumlah penjualan Adventure Work di setiap bulannya. Dapat disimpulkan sempat terjadi kenaikan dari bulan Juli hingga bulan Oktober namun terjadi penurunan yang cukup drastis dari bulan Oktober ke bulan November.
@@ -180,7 +180,7 @@ def main():
                     st.plotly_chart(fig_scatter)
 
                 # Penjelasan chart
-                with st.expander('About', expanded=True):
+                with st.expander('About Chart', expanded=True):
                     st.write('''
                          - Data: Database Adventure Work
                          - Visualisasi ini menggambarkan bagaimana penjualan berfluktuasi sepanjang waktu. Dapat disimpulkan terjadi peningkatan penjualan pada tahun-tahun terakhir.
@@ -200,7 +200,7 @@ def main():
                     st.plotly_chart(fig_donut)
 
                 # Penjelasan chart
-                with st.expander('About', expanded=True):
+                with st.expander('About Chart', expanded=True):
                     st.write('''
                          - Data: Database Adventure Work
                          - Visualisasi ini menggambarkan bagaimana penjualan didistribusikan di berbagai area geografis yang dapat membantu dalam analisis kinerja regional dan pengambilan keputusan strategis kedepannya.
@@ -220,7 +220,7 @@ def main():
                     st.plotly_chart(fig_scatter2)
 
                 # Penjelasan chart
-                with st.expander('About', expanded=True):
+                with st.expander('About Chart', expanded=True):
                     st.write('''
                          - Data: Database Adventure Work
                          - Visualisasi ini menggambarkan hubungan pendapatan tahunan pelanggan dengan jumlah penjualan yang dilakukan pelanggan tersebut. Dapat disimpulkan target pasar perusahaan ini merupakan pelanggan dengan golongan ekonomi menengah kebawah.
@@ -252,7 +252,7 @@ def main():
             st.plotly_chart(fig)
 
             # Penjelasan chart
-            with st.expander('About', expanded=True):
+            with st.expander('About Chart', expanded=True):
                 st.write('''
                      - Data: [Scrapping IMDB](https://www.imdb.com/search/title/?title_type=feature&release_date=2023-01-01,2023-12-31&companies=disney&sort=num_votes,desc)
                      - Visualisasi ini menggambarkan bagaimana anggaran dialokasikan di berbagai proyek film yang dapat membantu dalam analisis, pengambilan keputusan, dan pemahaman yang lebih baik tentang alokasi anggaran dalam produksi film.
@@ -294,7 +294,7 @@ def main():
             st.plotly_chart(fig)
 
             # Penjelasan chart
-            with st.expander('About', expanded=True):
+            with st.expander('About Chart', expanded=True):
                 st.write('''
                      - Data: [Scrapping IMDB](https://www.imdb.com/search/title/?title_type=feature&release_date=2023-01-01,2023-12-31&companies=disney&sort=num_votes,desc)
                      - Visualisasi ini berfungsi untuk memahami seberapa sukses film tersebut dalam mencapai pasar domestik dan internasional.
@@ -317,7 +317,7 @@ def main():
             st.plotly_chart(fig)
 
             # Penjelasan chart
-            with st.expander('About', expanded=True):
+            with st.expander('About Chart', expanded=True):
                 st.write('''
                      - Data: [Scrapping IMDB](https://www.imdb.com/search/title/?title_type=feature&release_date=2023-01-01,2023-12-31&companies=disney&sort=num_votes,desc)
                      - Visualisasi ini menggambarkan komposisi rating film yang diproduksi oleh Walt Disney pada tahun 2023. 
@@ -334,7 +334,7 @@ def main():
             st.plotly_chart(fig)
 
             # Penjelasan chart
-            with st.expander('About', expanded=True):
+            with st.expander('About Chart', expanded=True):
                 st.write('''
                      - Data: [Scrapping IMDB](https://www.imdb.com/search/title/?title_type=feature&release_date=2023-01-01,2023-12-31&companies=disney&sort=num_votes,desc)
                      - Visualisasi ini menggambarkan bagaimana alokasi anggaran terkait dengan durasi film. Dapat disimpulkan semakin lama durasi film maka semakin banyak budget yang dikeluarkan untuk memproduksi film tersebut.
