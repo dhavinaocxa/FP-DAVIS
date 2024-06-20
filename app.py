@@ -153,17 +153,18 @@ def main():
                     # Update layout for smaller scale
                     fig_line.update_layout(
                         autosize=False,
-                        width=800,  # Set width here
-                        height=400  # Set height here
+                        width=800, 
+                        height=400 
                     )
                     
                     st.plotly_chart(fig_line)
 
-            with st.expander('About', expanded=True):
-                st.write('''
-                     - Data: Database Adventure Work
-                     - Visualisasi ini menggambarkan perbandingan jumlah penjualan Adventure Work disetiap bulannya.
-                    ''')
+                # Penjelasan chart
+                with st.expander('About', expanded=True):
+                    st.write('''
+                         - Data: Database Adventure Work
+                         - Visualisasi ini menggambarkan perbandingan jumlah penjualan Adventure Work di setiap bulannya. Dapat disimpulkan sempat terjadi kenaikan dari bulan Juli hingga bulan Oktober namun terjadi penurunan yang cukup drastis dari bulan Oktober ke bulan November.
+                         ''')
 
             # 2. DISTRIBUTION - SCATTER PLOT
             elif chart_type == "Distribution":
@@ -178,6 +179,13 @@ def main():
                     )
                     st.plotly_chart(fig_scatter)
 
+                # Penjelasan chart
+                with st.expander('About', expanded=True):
+                    st.write('''
+                         - Data: Database Adventure Work
+                         - Visualisasi ini menggambarkan bagaimana penjualan berfluktuasi sepanjang waktu. Dapat disimpulkan terjadi peningkatan penjualan pada tahun-tahun terakhir.
+                         ''')
+
             # 3. COMPOSITION - DONUT CHART
             elif chart_type == "Composition":
                 st.header("Donut Chart - Komposisi Total Sales Berdasarkan Wilayah")
@@ -191,6 +199,13 @@ def main():
                     )])
                     st.plotly_chart(fig_donut)
 
+                # Penjelasan chart
+                with st.expander('About', expanded=True):
+                    st.write('''
+                         - Data: Database Adventure Work
+                         - Visualisasi ini menggambarkan bagaimana penjualan didistribusikan di berbagai area geografis yang dapat membantu dalam analisis kinerja regional dan pengambilan keputusan strategis kedepannya.
+                         ''')
+
             # 4. RELATIONSHIP - SCATTER PLOT
             elif chart_type == "Relationship":
                 st.header("Scatter Plot - Hubungan antara Pendapatan Tahunan dan Jumlah Penjualan")
@@ -203,6 +218,13 @@ def main():
                         labels={'YearlyIncome':'Pendapatan Tahunan (YearlyIncome)', 'TotalSalesAmount':'Jumlah Penjualan (TotalSalesAmount)'}
                     )
                     st.plotly_chart(fig_scatter2)
+
+                # Penjelasan chart
+                with st.expander('About', expanded=True):
+                    st.write('''
+                         - Data: Database Adventure Work
+                         - Visualisasi ini menggambarkan hubungan pendapatan tahunan pelanggan dengan jumlah penjualan yang dilakukan pelanggan tersebut. Dapat disimpulkan target pasar perusahaan ini merupakan pelanggan dengan golongan ekonomi menengah kebawah.
+                         ''')
     
             # Tutup koneksi ke database
             mydb.close()
@@ -219,28 +241,29 @@ def main():
         if chart_type == "Comparison":
             st.header("Bar Chart - Perbandingan Budget dari Setiap Film")
             
-            # Clean 'Open_Week_Date' to ensure it only contains date information
             data['Open_Week_Date'] = data['Open_Week_Date'].str.extract(r'(\d{4}-\d{2}-\d{2})')
-            
-            # Convert 'Open_Week_Date' to datetime
             data['Open_Week_Date'] = pd.to_datetime(data['Open_Week_Date'], format="%Y-%m-%d")
             
-            # Create bar chart for budget comparison
+            # Membuat bar chart untuk perbandingan budget
             fig = px.bar(data, x='Name', y='Budget',
                          labels={'Budget': 'Budget (in USD)', 'Name': 'Movie Name'})
             
-            # Display chart
+            # Tampilkan chart
             st.plotly_chart(fig)
+
+            # Penjelasan chart
+            with st.expander('About', expanded=True):
+                st.write('''
+                     - Data: [Scrapping IMDB](https://www.imdb.com/search/title/?title_type=feature&release_date=2023-01-01,2023-12-31&companies=disney&sort=num_votes,desc)
+                     - Visualisasi ini menggambarkan bagaimana anggaran dialokasikan di berbagai proyek film yang dapat membantu dalam analisis, pengambilan keputusan, dan pemahaman yang lebih baik tentang alokasi anggaran dalam produksi film.
+                     ''')
         
         
         # 2. DISTRIBUTION - SCATTER PLOT
         elif chart_type == "Distribution":
             st.header("Scatter Plot - Distribusi Gross US dan Gross World dari Setiap Film")
             
-            # Drop rows with missing values
-            data = data.dropna(subset=['Gross_US', 'Gross_World'])
-            
-            # Create scatter plot for both Gross_US and Gross_World
+            # Membuat scatter plot untuk Gross US dan Gross World
             fig = go.Figure()
             
             fig.add_trace(go.Scatter(
@@ -267,38 +290,55 @@ def main():
                 hovermode='closest'
             )
             
-            # Display chart
+            # Tampilkan chart
             st.plotly_chart(fig)
+
+            # Penjelasan chart
+            with st.expander('About', expanded=True):
+                st.write('''
+                     - Data: [Scrapping IMDB](https://www.imdb.com/search/title/?title_type=feature&release_date=2023-01-01,2023-12-31&companies=disney&sort=num_votes,desc)
+                     - Visualisasi ini berfungsi untuk memahami seberapa sukses film tersebut dalam mencapai pasar domestik dan internasional.
+                     ''')
         
         
         # 3. COMPOSITION - DONUT CHART
         elif chart_type == "Composition":
             st.header("Donut Chart - Komposisi Rating Film")
-            
-            # Drop rows with missing rating values
+        
             data = data.dropna(subset=['Rating'])
                     
-            # Create a donut chart for the rating distribution
+            # Membuat donut chart untuk komposisi rating
             rating_counts = data['Rating'].value_counts().reset_index()
             rating_counts.columns = ['Rating', 'Count']
                      
             fig = px.pie(rating_counts, values='Count', names='Rating', hole=0.4)
                     
-            # Display chart
+            # Tampilkan chart
             st.plotly_chart(fig)
+
+            # Penjelasan chart
+            with st.expander('About', expanded=True):
+                st.write('''
+                     - Data: [Scrapping IMDB](https://www.imdb.com/search/title/?title_type=feature&release_date=2023-01-01,2023-12-31&companies=disney&sort=num_votes,desc)
+                     - Visualisasi ini menggambarkan komposisi rating film yang diproduksi oleh Walt Disney pada tahun 2023. 
+                     ''')
         
         # 4. RELATIONSHIP - SCATTER PLOT
         elif chart_type == "Relationship":
             st.header("Scatter Plot - Hubungan antara Durasi dan Budget Film")
             
-            # Drop rows with missing values in 'Duration' or 'Budget'
-            data = data.dropna(subset=['Durasi(Menit)', 'Budget'])
-            
-            # Create scatter plot for Duration vs Budget
+            # Membuat scatter plot untuk hubungan durasi dan budget film
             fig = px.scatter(data, x='Durasi(Menit)', y='Budget', labels={'Duration': 'Duration (minutes)', 'Budget': 'Budget (USD)'})
             
-            # Display chart
+            # Tampilkan chart
             st.plotly_chart(fig)
+
+            # Penjelasan chart
+            with st.expander('About', expanded=True):
+                st.write('''
+                     - Data: [Scrapping IMDB](https://www.imdb.com/search/title/?title_type=feature&release_date=2023-01-01,2023-12-31&companies=disney&sort=num_votes,desc)
+                     - Visualisasi ini menggambarkan bagaimana alokasi anggaran terkait dengan durasi film. Dapat disimpulkan semakin lama durasi film maka semakin banyak budget yang dikeluarkan untuk memproduksi film tersebut.
+                     ''')
         
 
 if __name__ == "__main__":
