@@ -159,6 +159,12 @@ def main():
                     
                     st.plotly_chart(fig_line)
 
+                with st.expander('About', expanded=True):
+                    st.write('''
+                        - Data: Database Adventure Work
+                        - Visualisasi ini menggambarkan perbandingan jumlah penjualan Adventure Work disetiap bulannya.
+                        ''')
+
             # 2. DISTRIBUTION - SCATTER PLOT
             elif chart_type == "Distribution":
                 st.header("Scatter Plot - Distribusi Total Sales Berdasarkan OrderDateKey")
