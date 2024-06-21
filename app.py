@@ -14,12 +14,7 @@ st.set_page_config(
 # Fungsi untuk membuat koneksi ke database
 def get_db_connection():
     try:
-        connection = mysql.connector.connect(
-            host="kubela.id",
-            user="davis2024irwan",
-            password="wh451n9m@ch1n3",
-            database="aw"
-        )
+        connection = st.connection("mydb", type="sql", autocommit=True)
         return connection
     except mysql.connector.Error as err:
         st.error(f"Error connecting to the database: {err}")
